@@ -83,3 +83,58 @@ function todosProdutos(lista) {
 
     container.innerHTML = htmlProdutos;
 }
+function adicionarAoCarrinho(nomeProduto) {
+    let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+
+    for (let i = 0; i < produtos.length; i++) {
+        if (produtos[i].nome === nomeProduto) {
+            carrinho.push(produtos[i]);
+        }
+    }
+
+    localStorage.setItem('carrinho', JSON.stringify(carrinho));
+
+    alert(nomeProduto + ' foi adicionado ao carrinho!');
+}
+
+if (container) {
+    todosProdutos(produtos);
+}
+
+if (listaCarrinho && totalSpan) {
+    let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+
+    listaCarrinho.innerHTML = carrinho.map(item => `
+<li>${item.nome} - R$ ${item.preco.toFixed(2).replace('.', ',')}</li>
+`).join('');
+
+    totalPreco = carrinho.reduce((acumulador, item) => {
+        return acumulador + item.preco;
+    }, 0);
+
+    totalSpan.innerText =
+        'R$ ' + totalPreco.toFixed(2).replace('.', ',');
+
+    if (cupom) {
+        // Verifica se o cupom já foi usado anteriormente nesta sessão/navegador
+        const cupomUsado = localStorage.getItem('cupomAplicado') === 'true';
+
+        if (cupomUsado) {
+            cupom.disabled = true;
+            cupom.innerText = "Cupom já utilizado";
+            cupom.style.opacity = "0.5"; // Feedback visual de desativado
+        }
+
+        cupom.onclick = function () {
+            totalPreco = totalPreco * 0.9;
+            totalSpan.innerText = 'R$ ' + totalPreco.toFixed(2).replace('.', ',');
+            cupom.disabled = true;
+            cupom.innerText = "Cupom Aplicado";
+
+
+            localStorage.setItem('cupomAplicado', 'true');
+
+            alert("Desconto de 10% aplicado com sucesso!");
+        };
+    }
+}
