@@ -40,3 +40,46 @@ const produtos = [
         imagem: 'src/assets/imagens/Design sem nome.jpg'
     }
 ];
+const container = document.getElementById('todosProd');
+const listaCarrinho = document.getElementById('lista-carrinho');
+const totalSpan = document.getElementById('total');
+const cupom = document.getElementById('cupom');
+
+let totalPreco = 0;
+
+function todosProdutos(lista) {
+    const htmlProdutos = lista.map(item => `
+            <div class="card">
+         <img class="card-imagem" src="${item.imagem}" alt="">
+            <div class="card-conteudo">
+         <h3 class="card-titulo">${item.nome}</h3>
+
+         <p class="card-Motor">
+          Motor: ${item.Motor}
+         </p>
+
+         <p class="card-Bateria">
+          Bateria: ${item.Bateria}
+         </p>
+
+         <p class="card-Velocidade">
+          Velocidade: ${item.Velocidade}
+         </p>
+
+         <p class="card-preco">
+         Preço: R$ ${Number(item.preco)
+            .toFixed(2)
+            .replace('.', ',')}
+        </p>
+
+        <button
+        class="btn-carrinho"
+        onclick="adicionarAoCarrinho('${item.nome}')">
+        Adicionar ao Carrinho
+         </button>
+         </div>
+        </div>
+         `).join('');
+
+    container.innerHTML = htmlProdutos;
+}
