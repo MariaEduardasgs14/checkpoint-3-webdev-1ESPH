@@ -82,7 +82,7 @@ function todosProdutos(lista) {
          `).join('');
 
     container.innerHTML = htmlProdutos;
-}
+
 function adicionarAoCarrinho(nomeProduto) {
     let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
 
